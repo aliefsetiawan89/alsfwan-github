@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Situs Web Pribadi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white rounded-xl shadow-2xl p-8 max-w-sm w-full text-center transform transition-transform duration-500 hover:scale-105">
+        <div class="mb-6">
+            <img src="https://placehold.co/150x150/e5e7eb/4b5563?text=Foto" alt="Foto Profil" class="w-32 h-32 rounded-full mx-auto shadow-lg border-4 border-white">
+        </div>
+        <h1 id="userName" class="text-3xl font-bold text-gray-800 mb-2 transition-colors duration-300">Nama Anda</h1>
+        <p id="userBio" class="text-gray-600 mb-6 transition-colors duration-300">
+            Deskripsi singkat tentang diri Anda atau apa yang Anda lakukan.
+        </p>
+
+        <div class="space-y-4">
+            <button onclick="editProfile()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                Edit Profil
+            </button>
+            <a href="mailto:emailanda@example.com" class="w-full inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                Hubungi Saya
+            </a>
+        </div>
+    </div>
+
+    <!-- Custom Modal for editing profile (menggantikan alert) -->
+    <div id="editModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50 transition-opacity duration-300">
+        <div class="bg-white rounded-xl shadow-lg p-6 m-4 max-w-md w-full">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Edit Profil</h2>
+            <div class="mb-4">
+                <label for="inputName" class="block text-gray-700 font-medium mb-1">Nama</label>
+                <input type="text" id="inputName" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">
+            </div>
+            <div class="mb-4">
+                <label for="inputBio" class="block text-gray-700 font-medium mb-1">Deskripsi</label>
+                <textarea id="inputBio" rows="3" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"></textarea>
+            </div>
+            <div class="flex justify-end space-x-2">
+                <button onclick="saveProfile()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300">
+                    Simpan
+                </button>
+                <button onclick="closeModal()" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk mengedit profil
+        function editProfile() {
+            // Tampilkan modal
+            document.getElementById('editModal').classList.remove('hidden');
+
+            // Set nilai input dengan nilai saat ini
+            document.getElementById('inputName').value = document.getElementById('userName').innerText;
+            document.getElementById('inputBio').value = document.getElementById('userBio').innerText;
+        }
+
+        // Fungsi untuk menyimpan profil
+        function saveProfile() {
+            const newName = document.getElementById('inputName').value;
+            const newBio = document.getElementById('inputBio').value;
+
+            if (newName && newBio) {
+                document.getElementById('userName').innerText = newName;
+                document.getElementById('userBio').innerText = newBio;
+                closeModal();
+            } else {
+                // Tampilkan pesan kesalahan dalam modal, bukan alert
+                const modal = document.getElementById('editModal');
+                let errorMessage = modal.querySelector('.error-message');
+                if (!errorMessage) {
+                    errorMessage = document.createElement('p');
+                    errorMessage.className = 'text-red-500 text-sm mt-2 error-message';
+                    modal.querySelector('.flex').before(errorMessage);
+                }
+                errorMessage.innerText = "Nama dan deskripsi tidak boleh kosong.";
+            }
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById('editModal').classList.add('hidden');
+            const errorMessage = document.getElementById('editModal').querySelector('.error-message');
+            if (errorMessage) {
+                errorMessage.remove();
+            }
+        }
+    </script>
+</body>
+</html>
